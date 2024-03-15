@@ -80,7 +80,31 @@
 		  const A = props => <h1>A</h1>
 		  const B = props => <h1>B</h1>
   
-		ReactDOM.render(<App />, document.querySelector('#root'));
+
+//			ReactDOM.render(<App />, document.querySelector('#root'));
+
+		  
+		  const render = () => {
+			ReactDOM.render(<App />, document.querySelector('#root'));
+			return Promise.resolve();
+		  };
+		  
+		  (global => {
+			global['purehtml'] = {
+			  bootstrap: () => {
+				console.log('purehtml bootstrap');
+				return Promise.resolve();
+			  },
+			  mount: () => {
+				console.log('purehtml mount');
+				return render();
+			  },
+			  unmount: () => {
+				console.log('purehtml unmount');
+				return Promise.resolve();
+			  },
+			};
+		  })(window);
 	  </script>
 </body>
 </html>

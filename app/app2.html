@@ -4,6 +4,10 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+	<script
+	src="https://code.jquery.com/jquery-3.7.1.min.js"
+	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+	crossorigin="anonymous"></script>
 	<style>
 		body {
 			background-color:blueviolet;
@@ -12,6 +16,32 @@
 </head>
 <body>
 	<h1>this is app2</h1>
-	
+	<div style="display: flex; justify-content: center; align-items: center; height: 200px;">
+		Purehtml Example
+	  </div>
+	  <div id="purehtml-container" style="text-align:center"></div>
+	<script>
+		const render = $ => {
+			$('#purehtml-container').html('Hello, render with jQuery');
+			return Promise.resolve();
+		  };
+		  
+		  (global => {
+			global['purehtml'] = {
+			  bootstrap: () => {
+				console.log('purehtml bootstrap');
+				return Promise.resolve();
+			  },
+			  mount: () => {
+				console.log('purehtml mount');
+				return render($);
+			  },
+			  unmount: () => {
+				console.log('purehtml unmount');
+				return Promise.resolve();
+			  },
+			};
+		  })(window);
+	</script>
 </body>
 </html>

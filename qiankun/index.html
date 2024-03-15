@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<div class="mainapp">
+		<!-- 标题栏 -->
+		<header class="mainapp-header">
+		  <h1>QianKun</h1>
+		</header>
+		<div class="mainapp-main">
+		  <!-- 侧边栏 -->
+		  <ul class="mainapp-sidemenu">
+			<li onclick="push('/react16')">React16</li>
+			<li onclick="push('/pure')">pure</li>
+		  </ul>
+		  <!-- 子应用  -->
+		  <main id="subapp-viewport"></main>
+		</div>
+	  </div>
+
+	<script src='https://unpkg.com/react@16.3.1/umd/react.production.min.js'></script>
+    <script src='https://unpkg.com/react-dom@16.3.1/umd/react-dom.production.min.js'></script>
+    <script src='https://unpkg.com/react-router-dom@5.0.0/umd/react-router-dom.min.js'></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/qiankun@2.10.16/dist/index.umd.min.js"></script>
+	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+	<script>
+		function push(subapp) { history.pushState(null, subapp, subapp) }
+	</script>
+	<script type="text/babel">
+		const Link = ReactRouterDOM.Link,
+		Route = ReactRouterDOM.Route;
+
+		function Render(props) {
+			const { loading } = props;
+		  
+			return (
+			  <>
+				{loading && <h4 className="subapp-loading">Loading...</h4>}
+				<div id="subapp-viewport" />
+			  </>
+			);
+		  }
+  
+		  function render({ loading }) {
+			const container = document.getElementById('subapp-viewport');
+			ReactDOM.render(<Render loading={loading} />, container);
+		  }
+
+		  render({ loading: true });
+		  const loader = (loading) => render({ loading });
+
+		  // 初始化应用
+		  const { registerMicroApps, start, setDefaultMountApp } = qiankun;
+		  registerMicroApps([
+		  {
+			name: 'react16',
+			entry: '//localhost:8000/app/app1.html',
+			container: '#subapp-viewport',
+			loader,
+			activeRule: '/react16',
+		  },
+		  {
+			name: 'pure',
+			entry: '//localhost:8000/app/app2.html',
+			container: '#subapp-viewport',
+			loader,
+			activeRule: '/pure',
+		  },
+		  ], {
+			beforeLoad: [
+			  (app) => {
+				console.log('[LifeCycle] before load %c%s', 'color: green;', app.name);
+			  },
+			],
+			beforeMount: [
+			  (app) => {
+				console.log('[LifeCycle] before mount %c%s', 'color: green;', app.name);
+			  },
+			],
+			afterUnmount: [
+			  (app) => {
+				console.log('[LifeCycle] after unmount %c%s', 'color: green;', app.name);
+			  },
+			],
+		  },
+		);
+		setDefaultMountApp('/pure');
+
+		  start();
+
+	</script>
+
+</body>
+</html>

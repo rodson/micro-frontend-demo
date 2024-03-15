@@ -67,16 +67,16 @@
 			console.log(e);
 		}
 
-	//	iframe.contentWindow.history.pushState = new Proxy(iframe.contentWindow.history.pushState, {
-	//		apply: (target, thisArg, argArray) => {
-	//			console.log('----fffff------');
-	//			window.history.pushState.apply(thisArg, argArray);
-	//		  return target.apply(thisArg, argArray);
-	//		},
-	//	  });
-		  iframe.contentWindow.history.pushState = () => {
-			console.log('----fdsa-fsd-f--');
-		  }
+		iframe.onload = function() {
+			console.log('---- on load ---');
+				iframe.contentWindow.history.pushState = new Proxy(iframe.contentWindow.history.pushState, {
+					apply: (target, thisArg, argArray) => {
+						console.log('----fffff------');
+						window.history.pushState.apply(thisArg, argArray);
+					  return target.apply(thisArg, argArray);
+					},
+				  });
+			};
 	</script>
 	<script type="text/babel">
 		const Link = ReactRouterDOM.Link,
