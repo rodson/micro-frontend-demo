@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<h1>this is main</h1>
+	<button id="btn1">app1</button>
+	<button id="btn2">app2</button>
+	<button id="btnSend">send</button>
+	<iframe style="border:none;" id="app" width="300" height="300" src=""></iframe>
+	<script>
+		const btn1 = document.getElementById('btn1');
+		const btn2 = document.getElementById('btn2');
+		const btnSend = document.getElementById('btnSend');
+		const iframe = document.getElementById('app');
+		btn1.addEventListener('click', () => {
+			iframe.src="http://localhost:8000/app/app1.html";
+		});
+		btn2.addEventListener('click', () => {
+			iframe.src="http://localhost:8000/app/app2.html";
+		});
+		btnSend.addEventListener('click', () => {
+			iframe.contentWindow.postMessage('hello from parent', '*');
+		});
+		window.addEventListener("message", (event) => {
+			console.log('---- on messazge ----');
+			console.log(event.origin);
+			console.log(event.data);
+		});
+	</script>
+	<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+</body>
+</html>

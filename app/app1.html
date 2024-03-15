@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		body {
+			background-color: aqua;
+		}
+	</style>
+</head>
+<body>
+	<h1>this is app1</h1>
+	<button id="btn1">send message</button>
+	<script>
+		// Listen for incoming messages
+		window.addEventListener("message", (event) => {
+			console.log('------ sub app1 -----');
+			console.log(event.origin);
+			console.log(event.data);
+		});
+
+		const btn1 = document.getElementById('btn1');
+		btn1.addEventListener('click', () => {
+			window.parent.postMessage("Hello from app 1!", "*");
+		});
+	</script>
+	<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+</body>
+</html>
